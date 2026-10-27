@@ -1,27 +1,17 @@
 
-import { useEffect, useState } from "react";
 import { CalendarDays } from "lucide-react";
-import { buscarConsultas } from "../services/consultasService";
-import type { ConsultaExibicao } from "../types/consulta";
 import { ConsultaCard } from "../components/ui/ConsultaCard";
+import { useAgenda } from "../hooks/useAgenda";
 
 export default function Agenda() {
-  const [consultas, setConsultas] = useState<ConsultaExibicao[]>([]);
-  const [carregando, setCarregando] = useState(true);
-
-  useEffect(() => {
-    buscarConsultas()
-      .then(setConsultas)
-      .finally(() => setCarregando(false));
-  }, []);
-
-  function reagendarConsulta() {
-    alert("A função de reagendamento será implementada depois.");
-  }
-
-  function cancelarConsulta() {
-    alert("A função de cancelamento será implementada depois.");
-  }
+  const {
+    consultas,
+    carregando,
+    erro,
+    reagendarConsulta,
+    cancelarConsulta,
+    agendarNovaConsulta,
+  } = useAgenda();
 
   return (
     <section className="px-4 py-8 sm:px-8">
@@ -40,7 +30,11 @@ export default function Agenda() {
           </p>
         </div>
 
-        {carregando ? (
+        {erro ? (
+          <p role="alert" className="rounded-xl bg-red-50 p-4 text-red-700">
+            {erro}
+          </p>
+        ) : carregando ? (
           <p className="py-10 text-center text-gray-500">
             Carregando consultas...
           </p>
@@ -68,9 +62,7 @@ export default function Agenda() {
         <div className="mt-6 flex justify-center">
           <button
             type="button"
-            onClick={() =>
-              alert("O fluxo de agendamento será implementado depois.")
-            }
+            onClick={agendarNovaConsulta}
             className="w-full rounded-2xl bg-[#28796D] px-6 py-4 font-semibold text-white transition hover:bg-[#22695F] sm:w-auto sm:min-w-72"
           >
             Agendar nova consulta

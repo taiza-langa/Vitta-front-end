@@ -1,28 +1,18 @@
 
-import { useEffect, useState } from "react";
 import {
   CalendarDays,
   History as HistoryIcon,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { buscarHistorico } from "../services/historicoService";
-import type { ConsultaExibicao } from "../types/consulta";
 import { ConsultaCard } from "../components/ui/ConsultaCard";
+import { useHistorico } from "../hooks/useHistorico";
 
 export default function Historico() {
-  const [consultas, setConsultas] = useState<ConsultaExibicao[]>([]);
-  const [carregando, setCarregando] = useState(true);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    buscarHistorico()
-      .then(setConsultas)
-      .finally(() => setCarregando(false));
-  }, []);
-
-  const consultasConcluidas = consultas.filter(
-    (consulta) => consulta.status.toUpperCase() === "CONCLUÍDA",
-  );
+  const {
+    consultasConcluidas,
+    carregando,
+    erro,
+    agendarNovaConsulta,
+  } = useHistorico();
 
   return (
     <section className="px-4 py-8 sm:px-8">
@@ -41,7 +31,11 @@ export default function Historico() {
           </p>
         </header>
 
-        {carregando ? (
+        {erro ? (
+          <p role="alert" className="rounded-xl bg-red-50 p-4 text-red-700">
+            {erro}
+          </p>
+        ) : carregando ? (
           <p className="py-10 text-center text-gray-500">
             Carregando histórico...
           </p>
@@ -68,7 +62,7 @@ export default function Historico() {
         <div className="mt-6 flex justify-center">
           <button
             type="button"
-            onClick={() => navigate("/agenda")}
+            onClick={agendarNovaConsulta}
             className="w-full rounded-2xl bg-[#28796D] px-6 py-4 font-semibold text-white transition hover:bg-[#22695F] sm:w-auto sm:min-w-72"
           >
             Agendar nova consulta

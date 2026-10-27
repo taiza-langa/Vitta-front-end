@@ -1,4 +1,3 @@
-
 export async function apiRequest(
   path: string,
   options?: RequestInit,
@@ -19,9 +18,4 @@ export async function apiRequest(
   }
 
   return response;
-}
-
-export async function getJson<T>(path: string): Promise<T> {
-  const response = await apiRequest(path);
-  return response.json() as Promise<T>;
 }
