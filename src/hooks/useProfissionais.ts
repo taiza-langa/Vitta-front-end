@@ -70,7 +70,11 @@ export function useProfissionais() {
     setNome(profissional.nome);
     setEmail(profissional.email ?? "");
     setTelefone(profissional.telefone ?? "");
-    setEspecialidadeIds(profissional.especialidades.map(({ id }) => id));
+    setEspecialidadeIds(
+      profissional.profissionalEspecialidades.map(
+        ({ especialidade }) => especialidade.id,
+      ),
+    );
     setErro(null);
   }
 

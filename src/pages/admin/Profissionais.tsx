@@ -93,9 +93,9 @@ export default function Profissionais() {
                       )}
                     </span>
                     <span className="text-xs text-[#718884]">
-                      {profissional.especialidades.length > 0
-                        ? profissional.especialidades
-                            .map(({ nome }) => nome)
+                      {profissional.profissionalEspecialidades.length > 0
+                        ? profissional.profissionalEspecialidades
+                            .map(({ especialidade }) => especialidade.nome)
                             .join(", ")
                         : "Sem especialidade vinculada"}
                     </span>

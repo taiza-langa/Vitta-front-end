@@ -8,7 +8,9 @@ export interface Profissional {
   nome: string;
   email: string | null;
   telefone: string | null;
-  especialidades: Especialidade[];
+  profissionalEspecialidades: Array<{
+    especialidade: Especialidade;
+  }>;
 }
 
 export interface ProfissionalDados {
