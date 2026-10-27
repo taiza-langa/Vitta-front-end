@@ -10,19 +10,8 @@ import Inicio from "./pages/Inicio";
 import Agenda from "./pages/Agenda";
 import Historico from "./pages/Historico";
 import Perfil from "./pages/Perfil";
-
-function Especialidades() {
-  return (
-    <section className="p-6 sm:p-8">
-      <h2 className="text-xl font-semibold text-[#193F39]">
-        Especialidades cadastradas
-      </h2>
-      <p className="mt-2 text-sm text-gray-500">
-        Aqui ficará o gerenciamento de especialidades.
-      </p>
-    </section>
-  );
-}
+import Especialidades from "./pages/admin/Especialidades";
+import Profissionais from "./pages/admin/Profissionais";
 
 function AdminPlaceholder({ titulo }: { titulo: string }) {
   return (
@@ -46,10 +35,7 @@ function App() {
           <Route path="/perfil" element={<Perfil />} />
 
           <Route path="/admin" element={<Especialidades />} />
-          <Route
-            path="/admin/profissionais"
-            element={<AdminPlaceholder titulo="Profissionais" />}
-          />
+          <Route path="/admin/profissionais" element={<Profissionais />} />
           <Route
             path="/admin/agendas"
             element={<AdminPlaceholder titulo="Agendas" />}
