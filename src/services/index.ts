@@ -6,3 +6,6 @@ export { excluirEspecialidade } from "./excluirEspecialidade";
 export { atualizarProfissional } from "./atualizarProfissional";
 export { criarProfissional } from "./criarProfissional";
 export { excluirProfissional } from "./excluirProfissional";
+export { buscarAgendas } from "./buscarAgendas";
+export { criarAgenda } from "./criarAgenda";
+export { intervaloAgendaValido } from "./intervaloAgendaValido";

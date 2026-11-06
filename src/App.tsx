@@ -13,6 +13,7 @@ import Perfil from "./pages/Perfil";
 import Especialidades from "./pages/admin/Especialidades";
 import Profissionais from "./pages/admin/Profissionais";
 import AdminPlaceholder from "./pages/admin/AdminPlaceholder";
+import Agendas from "./pages/admin/Agendas";
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
           <Route path="/admin/profissionais" element={<Profissionais />} />
           <Route
             path="/admin/agendas"
-            element={<AdminPlaceholder titulo="Agendas" />}
+            element={<Agendas />}
           />
           <Route
             path="/admin/pacientes"

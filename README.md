@@ -19,6 +19,8 @@ npm run dev
 
 O painel de profissionais permite cadastrar, editar e excluir registros, incluindo vínculo com múltiplas especialidades, e-mail e telefone.
 
+O painel de agendas permite cadastrar horários disponíveis por profissional. Os períodos precisam ter pelo menos uma hora, que é a duração definida para as consultas. O campo de auditoria `criado_por` é opcional até a implementação da autenticação.
+
 Inicie o backend em outro terminal, na pasta `Vitta-back-end`, usando `npm run dev`. Ele deve estar disponível em `http://localhost:3000`; o Vite encaminha as chamadas de `/api` para esse servidor.
 
 As telas administrativas de especialidades e profissionais carregam os dados do backend. A tela de especialidades também permite cadastrar, editar e excluir registros; a API impede a exclusão de especialidades vinculadas a consultas. As consultas continuam desconectadas: a API atual retorna consultas de todos os pacientes e ainda não há autenticação para restringi-las ao paciente correto.
