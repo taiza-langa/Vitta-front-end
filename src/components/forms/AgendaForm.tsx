@@ -8,12 +8,14 @@ interface AgendaFormProps {
   data: string;
   horarioInicial: string;
   horarioFinal: string;
+  editando: boolean;
   salvando: boolean;
   onProfissionalChange: (value: string) => void;
   onDataChange: (value: string) => void;
   onHorarioInicialChange: (value: string) => void;
   onHorarioFinalChange: (value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  onCancelarEdicao: () => void;
 }
 
 export function AgendaForm({
@@ -22,19 +24,25 @@ export function AgendaForm({
   data,
   horarioInicial,
   horarioFinal,
+  editando,
   salvando,
   onProfissionalChange,
   onDataChange,
   onHorarioInicialChange,
   onHorarioFinalChange,
   onSubmit,
+  onCancelarEdicao,
 }: AgendaFormProps) {
   return (
     <section className="overflow-visible rounded-3xl border border-[#DFE9E5] bg-white shadow-[0_8px_24px_rgba(25,63,57,0.06)]">
       <header className="border-b border-[#E8EFEC] px-5 py-5 sm:px-6">
-        <h2 className="font-medium text-[#193F39]">Nova agenda</h2>
+        <h2 className="font-medium text-[#193F39]">
+          {editando ? "Editar agenda" : "Nova agenda"}
+        </h2>
         <p className="mt-1 text-xs text-[#7D9290]">
-          Preencha as informações abaixo
+          {editando
+            ? "Atualize as informações abaixo"
+            : "Preencha as informações abaixo"}
         </p>
       </header>
 
@@ -121,21 +129,37 @@ export function AgendaForm({
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={
-            salvando ||
-            profissionais.length === 0 ||
-            !profissionalId ||
-            !data ||
-            !horarioInicial ||
-            !horarioFinal ||
-            !intervaloAgendaValido(horarioInicial, horarioFinal)
-          }
-          className="w-full rounded-xl bg-[#2D806F] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#246F60] disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {salvando ? "Salvando..." : "Salvar cadastro"}
-        </button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <button
+            type="submit"
+            disabled={
+              salvando ||
+              profissionais.length === 0 ||
+              !profissionalId ||
+              !data ||
+              !horarioInicial ||
+              !horarioFinal ||
+              !intervaloAgendaValido(horarioInicial, horarioFinal)
+            }
+            className="w-full rounded-xl bg-[#2D806F] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#246F60] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {salvando
+              ? "Salvando..."
+              : editando
+                ? "Salvar alterações"
+                : "Salvar cadastro"}
+          </button>
+          {editando && (
+            <button
+              type="button"
+              onClick={onCancelarEdicao}
+              disabled={salvando}
+              className="w-full rounded-xl border border-[#D8E3DF] px-4 py-3 text-sm font-semibold text-[#28796D] transition hover:bg-[#F0F8F5] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Cancelar
+            </button>
+          )}
+        </div>
       </form>
     </section>
   );

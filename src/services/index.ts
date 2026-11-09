@@ -7,5 +7,7 @@ export { atualizarProfissional } from "./atualizarProfissional";
 export { criarProfissional } from "./criarProfissional";
 export { excluirProfissional } from "./excluirProfissional";
 export { buscarAgendas } from "./buscarAgendas";
+export { atualizarAgenda } from "./atualizarAgenda";
 export { criarAgenda } from "./criarAgenda";
+export { excluirAgenda } from "./excluirAgenda";
 export { intervaloAgendaValido } from "./intervaloAgendaValido";
