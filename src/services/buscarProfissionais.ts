@@ -1,6 +1,8 @@
 import { getJson } from "./getJson";
-import type { Profissional } from "../types/catalogo";
+import { mapearProfissional } from "./mapearProfissional";
+import type { Profissional, ProfissionalApi } from "../types/catalogo";
 
-export function buscarProfissionais(): Promise<Profissional[]> {
-  return getJson<Profissional[]>("/profissionais");
+export async function buscarProfissionais(): Promise<Profissional[]> {
+  const profissionais = await getJson<ProfissionalApi[]>("/profissionais");
+  return profissionais.map(mapearProfissional);
 }

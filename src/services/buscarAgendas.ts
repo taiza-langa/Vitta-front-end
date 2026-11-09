@@ -1,6 +1,8 @@
 import { getJson } from "./getJson";
-import type { Agenda } from "../types/agenda";
+import { mapearAgenda } from "./mapearAgenda";
+import type { Agenda, AgendaApi } from "../types/agenda";
 
-export function buscarAgendas(): Promise<Agenda[]> {
-  return getJson<Agenda[]>("/agendas");
+export async function buscarAgendas(): Promise<Agenda[]> {
+  const agendas = await getJson<AgendaApi[]>("/agendas");
+  return agendas.map(mapearAgenda);
 }

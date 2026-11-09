@@ -19,3 +19,16 @@ export interface ProfissionalDados {
   telefone: string | null;
   especialidade_ids: number[];
 }
+
+export interface ProfissionalApi {
+  id: number;
+  nome: string;
+  email: string | null;
+  telefone: string | null;
+  profissional_especialidades: Array<{
+    profissional_id: number;
+    especialidade_id: number;
+    criado_em: string;
+    especialidade: Especialidade;
+  }>;
+}

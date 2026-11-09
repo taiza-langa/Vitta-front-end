@@ -1,5 +1,6 @@
 import { apiRequest } from "./apiRequest";
-import type { Agenda, AgendaDados } from "../types/agenda";
+import { mapearAgenda } from "./mapearAgenda";
+import type { Agenda, AgendaApi, AgendaDados } from "../types/agenda";
 
 export async function criarAgenda(dados: AgendaDados): Promise<Agenda> {
   const response = await apiRequest("/agendas", {
@@ -8,5 +9,6 @@ export async function criarAgenda(dados: AgendaDados): Promise<Agenda> {
     body: JSON.stringify(dados),
   });
 
-  return response.json() as Promise<Agenda>;
+  const agenda: AgendaApi = await response.json();
+  return mapearAgenda(agenda);
 }

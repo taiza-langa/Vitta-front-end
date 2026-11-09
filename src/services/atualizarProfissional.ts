@@ -1,5 +1,10 @@
 import { apiRequest } from "./apiRequest";
-import type { Profissional, ProfissionalDados } from "../types/catalogo";
+import { mapearProfissional } from "./mapearProfissional";
+import type {
+  Profissional,
+  ProfissionalApi,
+  ProfissionalDados,
+} from "../types/catalogo";
 
 export async function atualizarProfissional(
   id: number,
@@ -11,5 +16,6 @@ export async function atualizarProfissional(
     body: JSON.stringify(dados),
   });
 
-  return response.json() as Promise<Profissional>;
+  const profissional: ProfissionalApi = await response.json();
+  return mapearProfissional(profissional);
 }
