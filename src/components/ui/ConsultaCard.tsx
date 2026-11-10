@@ -10,7 +10,8 @@ interface ConsultaCardProps {
   consulta: ConsultaExibicao;
   modo: "agenda" | "historico";
   onReagendar?: (id: number) => void;
-  onCancelar?: (id: number) => void;
+  onCancelar?: (consulta: ConsultaExibicao) => void;
+  cancelando?: boolean;
 }
 
 export function ConsultaCard({
@@ -18,6 +19,7 @@ export function ConsultaCard({
   modo,
   onReagendar,
   onCancelar,
+  cancelando = false,
 }: ConsultaCardProps) {
   const [ano, mes, dia] = consulta.inicio_em.split("T")[0].split("-");
 
@@ -34,7 +36,13 @@ export function ConsultaCard({
   const concluida = consulta.status.toUpperCase() === "CONCLUÍDA";
 
   return (
-    <article className="rounded-3xl border border-gray-200/80 bg-white p-5 shadow-sm transition hover:shadow-md sm:p-6">
+    <article
+      className={`rounded-3xl border border-gray-200/80 bg-white p-5 shadow-sm transition sm:p-6 ${
+        cancelada
+          ? "opacity-60"
+          : "hover:shadow-md"
+      }`}
+    >
       <div className="flex gap-4">
         <div className="flex h-20 w-[68px] shrink-0 flex-col items-center justify-center rounded-2xl bg-[#E4F3EF] text-[#28796D]">
           <span className="text-2xl font-semibold">{data.dia}</span>
@@ -49,10 +57,10 @@ export function ConsultaCard({
                 : "bg-[#E4F3EF] text-[#28796D]"
             }`}
           >
-            {modo === "historico" || concluida ? (
-              <CheckCircle2 size={12} />
-            ) : cancelada ? (
+            {cancelada ? (
               <XCircle size={12} />
+            ) : modo === "historico" || concluida ? (
+              <CheckCircle2 size={12} />
             ) : null}
             {consulta.status}
           </span>
@@ -87,12 +95,13 @@ export function ConsultaCard({
 
           <button
             type="button"
-            onClick={() => onCancelar?.(consulta.id)}
-            className="rounded-xl border border-red-200 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-50"
+            disabled={cancelando}
+            onClick={() => onCancelar?.(consulta)}
+            className="rounded-xl border border-red-200 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <span className="inline-flex items-center gap-1.5">
               <XCircle size={14} />
-              Cancelar
+              {cancelando ? "Cancelando..." : "Cancelar"}
             </span>
           </button>
         </div>

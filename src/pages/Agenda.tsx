@@ -1,16 +1,25 @@
 
 import { CalendarDays } from "lucide-react";
+import { useState } from "react";
+import { AgendamentoModal } from "../components/modals/AgendamentoModal";
 import { ConsultaCard } from "../components/ui/ConsultaCard";
+import { Toast } from "../components/ui/Toast";
 import { useAgenda } from "../hooks/useAgenda";
 
 export default function Agenda() {
+  const [modalAberto, setModalAberto] = useState(false);
+  const [toast, setToast] = useState<{ id: number; message: string } | null>(
+    null,
+  );
   const {
     consultas,
     carregando,
     erro,
+    erroAcao,
+    recarregarConsultas,
     reagendarConsulta,
     cancelarConsulta,
-    agendarNovaConsulta,
+    cancelandoId,
   } = useAgenda();
 
   return (
@@ -29,6 +38,12 @@ export default function Agenda() {
             Suas próximas consultas ficam organizadas aqui.
           </p>
         </div>
+
+        {erroAcao && (
+          <p role="alert" className="mb-4 rounded-xl bg-red-50 p-4 text-red-700">
+            {erroAcao}
+          </p>
+        )}
 
         {erro ? (
           <p role="alert" className="rounded-xl bg-red-50 p-4 text-red-700">
@@ -53,7 +68,17 @@ export default function Agenda() {
                 consulta={consulta}
                 modo="agenda"
                 onReagendar={reagendarConsulta}
-                onCancelar={cancelarConsulta}
+                onCancelar={(consulta) => {
+                  void cancelarConsulta(consulta).then((cancelada) => {
+                    if (cancelada) {
+                      setToast((atual) => ({
+                        id: (atual?.id ?? 0) + 1,
+                        message: "Consulta cancelada com sucesso.",
+                      }));
+                    }
+                  });
+                }}
+                cancelando={cancelandoId === consulta.id}
               />
             ))}
           </div>
@@ -62,13 +87,35 @@ export default function Agenda() {
         <div className="mt-6 flex justify-center">
           <button
             type="button"
-            onClick={agendarNovaConsulta}
+            onClick={() => setModalAberto(true)}
             className="w-full rounded-2xl bg-[#28796D] px-6 py-4 font-semibold text-white transition hover:bg-[#22695F] sm:w-auto sm:min-w-72"
           >
             Agendar nova consulta
           </button>
         </div>
       </div>
+
+      {modalAberto && (
+        <AgendamentoModal
+          onClose={() => setModalAberto(false)}
+          onConfirm={() => {
+            setModalAberto(false);
+            recarregarConsultas();
+            setToast((atual) => ({
+              id: (atual?.id ?? 0) + 1,
+              message: "Consulta agendada com sucesso.",
+            }));
+          }}
+        />
+      )}
+
+      {toast && (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
     </section>
   );
 }

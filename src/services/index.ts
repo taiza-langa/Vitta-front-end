@@ -7,6 +7,8 @@ export { atualizarProfissional } from "./atualizarProfissional";
 export { criarProfissional } from "./criarProfissional";
 export { excluirProfissional } from "./excluirProfissional";
 export { buscarAgendas } from "./buscarAgendas";
+export { buscarConsultasPaciente } from "./buscarConsultasPaciente";
+export { buscarHorariosOcupados } from "./buscarHorariosOcupados";
 export { atualizarAgenda } from "./atualizarAgenda";
 export { criarAgenda } from "./criarAgenda";
 export { excluirAgenda } from "./excluirAgenda";
