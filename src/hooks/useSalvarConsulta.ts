@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { criarConsulta } from "../services/criarConsulta";
 import { calcularFimConsulta } from "../services/calcularFimConsulta";
-import { pacienteTesteId } from "../services/pacienteTeste";
+import { obterSessao } from "../services/obterSessao";
 
 interface UseSalvarConsultaProps {
   especialidadeId: string;
@@ -22,9 +22,11 @@ export function useSalvarConsulta({
   const [erro, setErro] = useState<string | null>(null);
 
   async function salvarConsulta() {
+    const usuarioId = obterSessao()?.usuario.id;
     if (
-      !Number.isInteger(pacienteTesteId) ||
-      pacienteTesteId < 1 ||
+      usuarioId === undefined ||
+      !Number.isInteger(usuarioId) ||
+      usuarioId < 1 ||
       !especialidadeId ||
       !profissionalId ||
       !data ||
@@ -39,7 +41,7 @@ export function useSalvarConsulta({
 
     try {
       await criarConsulta({
-        paciente_id: pacienteTesteId,
+        paciente_id: usuarioId,
         profissional_id: Number(profissionalId),
         especialidade_id: Number(especialidadeId),
         inicio_em: `${data}T${horario}:00`,

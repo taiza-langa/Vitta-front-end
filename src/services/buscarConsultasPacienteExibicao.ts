@@ -1,14 +1,19 @@
 import { buscarConsultasPaciente } from "./buscarConsultasPaciente";
 import { buscarProfissionais } from "./buscarProfissionais";
 import { buscarEspecialidades } from "./buscarEspecialidades";
-import { pacienteTesteId } from "./pacienteTeste";
+import { obterSessao } from "./obterSessao";
 import type { ConsultaExibicao } from "../types/consulta";
 
 export async function buscarConsultasPacienteExibicao(): Promise<
   ConsultaExibicao[]
 > {
+  const sessao = obterSessao();
+  if (!sessao) {
+    throw new Error("Faça login para consultar seus agendamentos.");
+  }
+
   const [consultas, profissionais, especialidades] = await Promise.all([
-    buscarConsultasPaciente(pacienteTesteId),
+    buscarConsultasPaciente(sessao.usuario.id),
     buscarProfissionais(),
     buscarEspecialidades(),
   ]);

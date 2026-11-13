@@ -1,12 +1,13 @@
 
 import { UserRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { usuarioAtual } from "../services/usuarioMock";
+import { obterSessao } from "../services/obterSessao";
+import { removerSessao } from "../services/removerSessao";
 
 export default function Perfil() {
   const navigate = useNavigate();
-
-  const isAdmin = usuarioAtual.tipo === "ADMIN";
+  const usuario = obterSessao()?.usuario;
+  const isAdmin = usuario?.tipo.toLowerCase() === "admin";
 
   return (
     <section className="px-4 py-8 sm:px-8">
@@ -26,6 +27,11 @@ export default function Perfil() {
         </div>
 
         <div className="space-y-3">
+          <div className="rounded-2xl border border-gray-200 bg-white px-6 py-5">
+            <p className="font-semibold text-[#193F39]">{usuario?.nome}</p>
+            <p className="mt-1 text-sm text-gray-500">{usuario?.email}</p>
+          </div>
+
           {isAdmin && (
             <button
               type="button"
@@ -38,7 +44,10 @@ export default function Perfil() {
 
           <button
             type="button"
-            onClick={() => alert("A função de sair será implementada depois.")}
+            onClick={() => {
+              removerSessao();
+              navigate("/login", { replace: true });
+            }}
             className="w-full rounded-2xl border border-[#F0D2CD] bg-white px-6 py-4 font-semibold text-[#B94D40] transition hover:bg-red-50"
           >
             Sair da conta

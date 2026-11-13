@@ -6,7 +6,7 @@ import {
   buscarHorariosOcupados,
   buscarProfissionais,
 } from "../services";
-import { pacienteTesteId } from "../services/pacienteTeste";
+import { obterSessao } from "../services/obterSessao";
 import { gerarDiasAgendamento } from "../services/gerarDiasAgendamento";
 import { gerarHorariosAgendamento } from "../services/gerarHorariosAgendamento";
 import { buscarHorarioOcupado } from "../services/buscarHorarioOcupado";
@@ -40,13 +40,18 @@ export function useAgendamentoPaciente() {
 
   useEffect(() => {
     let ativo = true;
+    const usuarioId = obterSessao()?.usuario.id;
 
-    Promise.all([
-      buscarEspecialidades(),
-      buscarProfissionais(),
-      buscarAgendas(),
-      buscarConsultasPaciente(pacienteTesteId),
-    ])
+    const dadosAgendamento = usuarioId
+      ? Promise.all([
+          buscarEspecialidades(),
+          buscarProfissionais(),
+          buscarAgendas(),
+          buscarConsultasPaciente(usuarioId),
+        ])
+      : Promise.reject(new Error("Faça login para agendar uma consulta."));
+
+    dadosAgendamento
       .then(
         ([
           dadosEspecialidades,
